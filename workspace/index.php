@@ -38,12 +38,12 @@ include "view_partials/header.php";
 if (array_key_exists('page', $_GET)) {
 	switch ($_GET['page']) {
 		case 'register':
-			if (isset($_SESSION['is_logged_in'])) {
-				include "view_partials/forbidden_logout.php";
+			// if (isset($_SESSION['is_logged_in'])) {
+			// 	include "view_partials/forbidden_logout.php";
 
-			} else {
+			// } else {
 				include "pages/register.php";
-			}
+			// }
 			break;
 
 		case 'login':
@@ -57,7 +57,23 @@ if (array_key_exists('page', $_GET)) {
 		case 'edit':
 			include "pages/edit.php";
 			break;
+		
+		case "addcategory":
+			include "pages/addcategory.php";
+		break;
+
+		case "editcategory":
+			include "pages/editcategory.php";
+		break;
+
+		case 'addproduct':
+			include "pages/addproduct.php";
+			break;
 			
+		case 'editproduct':
+			include "pages/editproduct.php";
+			break;
+
 		case 'logout':
 			// delete session
 			session_destroy();
@@ -76,17 +92,22 @@ if (array_key_exists('page', $_GET)) {
 				include "pages/home.php";
 			}
 			break;
+		
+		case "homepage":
+			include "pages/homepage.php";
+			break;
+			
 		default:
 			if (!isset($_SESSION['is_logged_in'])) {
 				// redirect to login
 				echo "<script>
-					window.location.href = '?page=login&debug_came_from_logout=1';
+					window.location.href = '?page=login&debug_came_from_logout=2';
 				</script>";
 				
 			} else {
 				// redirect to login
 				echo "<script>
-					window.location.href = '?page=home&debug_came_from_logout=1';
+					window.location.href = '?page=home&debug_came_from_logout=3';
 				</script>";
 			}
 			break;
@@ -95,13 +116,13 @@ if (array_key_exists('page', $_GET)) {
 	if (!isset($_SESSION['is_logged_in'])) {
 		// redirect to login
 		echo "<script>
-			window.location.href = '?page=login&debug_came_from_logout=1';
+			window.location.href = '?page=login&debug_came_from_logout=4';
 		</script>";
 		
 	} else {
 		// redirect to login
 		echo "<script>
-			window.location.href = '?page=home&debug_came_from_logout=1';
+			window.location.href = '?page=home&debug_came_from_logout=5';
 		</script>";
 	}
 }

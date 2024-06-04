@@ -11,7 +11,7 @@ class DB {
 		$this->host = 'db';
 		$this->username = 'root';
 		$this->password = 'cde3bgt5_root';
-		$this->dbname = 'fdci';
+		$this->dbname = 'aronlinestore';
 
 		// - connect to database
 		$this->connectToDB();
