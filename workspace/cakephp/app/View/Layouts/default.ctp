@@ -28,11 +28,11 @@
         <ul
           class="fixed top-0 h-20 w-full flex gap-10 items-center justify-center text-lg"
         >
-          <li class="right-auto"><a href="#">Home</a></li>
+          <li class="right-auto"><a href="/cakephp">Home</a></li>
           <!-- <li><a href="#">About</a></li> -->
-          <li><a href="#projects">Projects</a></li>
-          <li><a href="#contact">Contact</a></li>
-          <li><a href="shop.html">Shop</a></li>
+          <li><a href="/cakephp/projects">Projects</a></li>
+          <li><a href="/cakephp/contact">Contact</a></li>
+          <li><a href="/cakephp/shop">Shop</a></li>
         </ul>
       </nav>
     </header>
