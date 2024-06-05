@@ -32,6 +32,16 @@
 	Router::connect('/photo-gallery', array('controller' => 'PhotoGallery', 'action' => 'index'));
 	Router::connect('/contact-me/*', array('controller' => 'ContactMe', 'action' => 'index'));
 
+	Router::connect('/projects', array('controller' => 'Projects', 'action' => 'index'));
+	Router::connect('/contact', array('controller' => 'Contact', 'action' => 'index'));
+	Router::connect('/shop', array('controller' => 'Shop', 'action' => 'index'));
+
+	// Router::connect('/login', array('controller' => 'users', 'action' => 'login'));
+	// Router::connect('/logout', array('controller' => 'users', 'action' => 'logout'));
+	// Router::connect('/register', array('controller' => 'users', 'action' => 'register'));
+
+		
+
 /**
  * ...and connect the rest of 'Pages' controller's URLs.
  */
