@@ -32,6 +32,7 @@
 	Router::connect('/photo-gallery', array('controller' => 'PhotoGallery', 'action' => 'index'));
 	Router::connect('/contact-me/*', array('controller' => 'ContactMe', 'action' => 'index'));
 	Router::connect('/myresume', array('controller' => 'Resume', 'action' => 'index'));
+	Router::connect('/posts', array('controller' => 'Posts', 'action' => 'index'));
 /**
  * ...and connect the rest of 'Pages' controller's URLs.
  */

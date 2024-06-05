@@ -1,9 +1,9 @@
 <?php
 /**
- * Application level Controller
+ * Application model for CakePHP.
  *
- * This file is application-wide controller file. You can put all
- * application-wide controller-related methods here.
+ * This file is application-wide model file. You can put all
+ * application-wide model-related methods here.
  *
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -14,24 +14,24 @@
  *
  * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  * @link          https://cakephp.org CakePHP(tm) Project
- * @package       app.Controller
+ * @package       app.Model
  * @since         CakePHP(tm) v 0.2.9
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
-App::uses('Controller', 'Controller');
+App::uses('Model', 'Model');
 
 /**
- * Application Controller
+ * Application model for Cake.
  *
- * Add your application-wide methods in the class below, your controllers
+ * Add your application-wide methods in the class below, your models
  * will inherit them.
  *
- * @package		app.Controller
- * @link		https://book.cakephp.org/2.0/en/controllers.html#the-app-controller
+ * @package       app.Model
  */
-class AppController extends Controller {
-    // this will tell cakek to support php files for the view for rendering
-    public $ext = '.php';
-    public $default = array('Post');
+class Post extends AppModel {
+
+    public function getPosts(){
+        return $this->find("all");
+    }
 }
