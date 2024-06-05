@@ -1,106 +1,80 @@
 <?php
-// initialize any config files
+
 require_once "config/init.php";
 
-// $car1 = new Car("v6", 4, false, 20, 5);
-
-// $car2 = new Car("v8", 4, false, 100, 2);
-
-// // convoy
-// $moalboal_distaince = 85;
-// $total_people = 20;
-
-// echo $car1->variable1;
-
-// $car1->travel("moalboal", 85);
-// echo "<hr/>";
-
-// $car2->travel("moalboal", 85);
-// echo "<hr/>";
-
-// $car1->calculate_travel_cycles($total_people);
-// echo "<hr/>";
-// $car2->calculate_travel_cycles($total_people);
-// $wigo = new Toyota("v3", 4, false, 60, 5, 100);
-// $xpander = new Nissan();
-// $coolray = new Geely();
-
-// echo "<pre>";
-// $wigo->calculateMaintenceCost();
-// // $wigo->doAction();
-
-// die();
-
-
-// load header
 include "view_partials/header.php";
 
-if (array_key_exists('page', $_GET)) {
-	switch ($_GET['page']) {
-		case 'register':
-			if (isset($_SESSION['is_logged_in'])) {
-				include "view_partials/forbidden_logout.php";
+class Page{
 
-			} else {
-				include "pages/register.php";
-			}
-			break;
+    public function __construct(){
+        if (array_key_exists('page', $_GET)) {
+            switch ($_GET['page']) {
+                case 'register':
+                    $this->caseRegister();
+                    break;
+        
+                case 'login':
+                    $this->caseLogin();
+                    break;
+        
+                case 'logout':
+                    $this->caseLogout();
+                    break;
+                
+                case "home":
+                   $this->caseHome();
+                    break;
+                default:
+                    $this->caseDefault();
+                    break;
+            }
+        }
+    }
+    public function caseRegister(){
+        if (isset($_SESSION['is_logged_in'])) {
+            include "view_partials/forbidden_logout.php";
 
-		case 'login':
-			if (isset($_SESSION['is_logged_in'])) {
-				include "view_partials/forbidden_logout.php";
-			} else {
-				include "pages/login.php";
-			}
-			break;
+        } else {
+            include "pages/register.php";
+        }
+    }
+    public function caseLogin(){
+        if (isset($_SESSION['is_logged_in'])) {
+            include "view_partials/forbidden_logout.php";
+        } else {
+            include "pages/login.php";
+        }
+    }
+    public function caseLogout(){
+        session_destroy();
+        echo "<script>
+            window.location.href = '?page=login&debug_came_from_logout=1';
+        </script>";
 
-		case 'logout':
-			// delete session
-			session_destroy();
-
-			// redirect to login
-			echo "<script>
-				window.location.href = '?page=login&debug_came_from_logout=1';
-			</script>";
-			break;
-		
-		case "home":
-			if (!isset($_SESSION['is_logged_in'])) {
-				include "view_partials/forbidden_login.php";
-				
-			} else {
-				include "pages/home.php";
-			}
-			break;
-		default:
-			if (!isset($_SESSION['is_logged_in'])) {
-				// redirect to login
-				echo "<script>
-					window.location.href = '?page=login&debug_came_from_logout=1';
-				</script>";
-				
-			} else {
-				// redirect to login
-				echo "<script>
-					window.location.href = '?page=home&debug_came_from_logout=1';
-				</script>";
-			}
-			break;
-	}
-} else {
-	if (!isset($_SESSION['is_logged_in'])) {
-		// redirect to login
-		echo "<script>
-			window.location.href = '?page=login&debug_came_from_logout=1';
-		</script>";
-		
-	} else {
-		// redirect to login
-		echo "<script>
-			window.location.href = '?page=home&debug_came_from_logout=1';
-		</script>";
-	}
+    }
+    public function caseHome(){
+        if (!isset($_SESSION['is_logged_in'])) {
+            include "view_partials/forbidden_login.php";
+            
+        } else {
+            include "pages/home.php";
+        }
+    }
+    public function caseDefault(){
+        if (!isset($_SESSION['is_logged_in'])) {
+            echo "<script>
+                window.location.href = '?page=login&debug_came_from_logout=1';
+            </script>";
+            
+        } else {
+            echo "<script>
+                window.location.href = '?page=home&debug_came_from_logout=1';
+            </script>";
+        }
+    }
 }
 
-// load footer
+$db = new DB();
+$newPage = new Page($db);
+
 include "view_partials/footer.php";

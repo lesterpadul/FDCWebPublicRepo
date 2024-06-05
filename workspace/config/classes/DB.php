@@ -27,7 +27,27 @@ class DB {
 		);
 	}
 
+	public function getResponse() {
+		$data = [];
+		$query = "SELECT * FROM news";
+		$result = $this->sql->query($query);
+	
+		if ($result && $result->num_rows > 0) {
+			while ($row = $result->fetch_assoc()) {
+				$data[] = $row;
+			}
+		}
+	
+		return $data;
+	}
+
+	//$sql = "SELECT * FROM your_table";
+
+
 	public function insertData () {
 		
 	}
 }
+
+$db = new DB();
+$response = $db->getResponse();
