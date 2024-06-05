@@ -1,4 +1,4 @@
 <hr/>
 hello 
-<? echo $_SESSION["first_name"]; ?>
+<? echo $_SESSION["username"]; ?>
 <hr/>

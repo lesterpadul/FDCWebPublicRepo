@@ -1,94 +1,63 @@
 <?php
-// if has data, likely post request
-if (isset($_POST["user_firstname"])) {
-    $first_name = $db->sql->real_escape_string($_POST["user_firstname"]);
-    $last_name = $db->sql->real_escape_string($_POST["user_lastname"]);
-    $password = $db->sql->real_escape_string($_POST["user_password"]);
-    $cpassword = $db->sql->real_escape_string($_POST["user_confirm_password"]);
 
-
-    // if any of the fields dont have values, return error!
-    if (!$first_name || !$last_name || !$password || !$cpassword) {
-        echo "you have a missing field";
-        die();
-    }
-
-    // if passwords
-    if ($password != $cpassword) {
-        echo "passwords do not match";
-        die();
-    }
-
-    // encrypt the password
-    $password = password_hash($password, PASSWORD_DEFAULT);
-    $did_register = $db->sql->query("insert into users
-        (
-            status,
-            first_name,
-            last_name,
-            password
-        )
-        values
-        (
-            1,
-            '{$first_name}',
-            '{$last_name}',
-            '{$password}'
-        )");
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
-    if ($did_register) {
-        $result = $db->sql->query(
-            "select * from users where id = {$db->sql->insert_id}"
-        );
-        $user = $result->fetch_all(MYSQLI_ASSOC);
+    // Assuming sanitize is a function to sanitize input
+    $username = sanitize($_POST['username']);
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $role = 'student';
+    $ip_address = get_ip_address();
 
-        // set login to true
-        $_SESSION["is_logged_in"] = true;
-        $_SESSION["user_id"] = $user[0]['id'];
-        $_SESSION["first_name"] = $user[0]['first_name'];
-        $_SESSION["last_name"] = $user[0]['last_name'];
-        $_SESSION["last_login_time"] = time();
-           
-        // redirect to another page
-        echo "<script>
-            window.location.href = '?page=home';
-        </script>";
-        die();
+    if (empty($username) || empty($password)) {
+        echo "All fields are required.";
+    } else {
+        $stmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $stmt->store_result();
+
+        if ($stmt->num_rows > 0) {
+            echo "Username already taken.";
+        } else {
+            $stmt = $conn->prepare("INSERT INTO users (username, password, role, status, created_ip) VALUES (?, ?, ?, 1, ?)");
+            $stmt->bind_param("ssss", $username, $password, $role, $ip_address);
+
+            if ($stmt->execute()) {
+                echo "Registration successful";
+            } else {
+                echo "Error: " . $stmt->error;
+            }
+        }
+
+        $stmt->close();
     }
 }
 ?>
-<div class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h3>Registration Form</h3>
-                </div>
-                <div class="card-body">
-                    <form action="" method="POST">
-                        <div class="form-group">
-                            <label for="name">FirstName</label>
-                            <input type="text" name="user_firstname" class="form-control" value="<?php echo @$_POST['user_firstname']; ?>">
 
-                        </div>
-                        <div class="form-group">
-                            <label for="name">LastName</label>
-                            <input type="text" name="user_lastname" class="form-control" value="<?php echo @$_POST['user_lastname']; ?>">
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" name="user_password" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Confirm</label>
-                            <input type="password" name="user_confirm_password" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" name="submit" class="btn btn-primary">
-                        </div>
-                    </form>
-                </div>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Register</h1>
+        <form action="?page=register" method="POST">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" class="form-control" name="username" required>
             </div>
-        </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" class="form-control" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+        <?php if (isset($message)): ?>
+            <div class="alert alert-info mt-3">
+                <?php echo $message; ?>
+            </div>
+        <?php endif; ?>
     </div>
-</div>
+</body>
+</html>

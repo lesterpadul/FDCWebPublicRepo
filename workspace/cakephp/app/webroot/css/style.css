@@ -1,0 +1,518 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+q::before {
+	display: none;
+}
+
+q::after {
+	display: none;
+}
+
+body {
+	max-width: 1920px;
+	margin: 0 auto;
+	width: 100%;
+	box-sizing: border-box;
+	background-color: #1a1a1a;
+	color: #ffffff;
+}
+
+.c_orange {
+	color: #d84f4f;
+}
+
+.c_red {
+	color: #666666;
+}
+
+.t_center {
+	text-align: center;
+}
+
+header {
+	background: #1f1f1f;
+	padding: 15px 15px;
+}
+
+header h2 {
+	color: #d84f4f;
+}
+
+header h2 span {
+	color: #666666;
+}
+
+.wrapper {
+	width: 1200px;
+	max-width: 100%;
+	margin: 0 auto;
+	position: relative;
+}
+
+#navigation {
+	position: relative;
+}
+
+#navigation ul {
+	position: absolute;
+	top: -40px;
+	right: 0;
+}
+
+#navigation ul li {
+    display: inline;
+}
+
+#navigation ul li a {
+    padding: 0 10px;
+    font-size: 18px;
+    text-decoration: none;
+    color: white;
+    background-color: #d84f4f;
+    border: 2px solid #d84f4f;
+    border-radius: 10px;
+    margin-right: 10px;
+	transition: background-color 0.3s ease;
+}
+
+#navigation ul li a:hover {
+    background-color: #666666;
+    border-color: #666666;
+    text-decoration: none;
+}
+
+#banner {
+	overflow: hidden;
+	position: relative;
+}
+
+#banner::before {
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, .1);
+}
+
+#banner figure {}
+
+#banner figure img {
+	width: 100%;
+	height: 500px;
+	object-fit: cover;
+	object-position: bottom;
+}
+
+#banner .banner_info img.profile-picture {
+    border-radius: 50%;
+    width: 200px;
+    height: auto;
+    border: 4px solid #ffffff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.banner_info {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	color: #ffffff;
+	text-align: center;
+	width: 900px;
+	padding: 15px;
+	box-sizing: border-box;
+	max-width: 100%;
+}
+
+.banner_info h3 {
+	font-size: 35px;
+	margin-bottom: 20px;
+}
+
+.banner_info h3 span {
+	display: block;
+}
+
+.banner_info p {
+	font-size: 20px;
+}
+
+.banner_info a {
+	display: block;
+	width: 110px;
+	background: #d84f4f;
+	line-height: 50px;
+	color: #ffffff;
+	text-decoration: none;
+	border-radius: 10px;
+	margin: 25px auto 0;
+	transition: background-color 0.3s ease;
+}
+
+.banner_info a:hover {
+	background: #666666;
+}
+
+#about_me {
+    padding: 40px;
+    background-color: #333333;
+    margin-top: 30px;
+    border-radius: 50px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    color: #ffffff;
+}
+
+#about_me h3 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+#about_me p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+#about_me h4 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.timeline {
+    list-style: none;
+    position: relative;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    background-color: #666666;
+    transform: translateX(-50%);
+}
+
+.timeline li {
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.timeline-content {
+    padding-left: 20px;
+}
+
+.timeline-content h5 {
+    font-size: 20px;
+}
+
+.timeline-content p {
+    font-size: 16px;
+}
+
+#Services_con {
+	padding: 45px 15px;
+	background-color: #333333;
+}
+
+#Services_con h3 {
+	font-size: 30px;
+	color: #ffffff;
+}
+
+#Services_con img{
+	width: 526px;
+	height: 411px;
+}
+.service_boxes {
+	display: flex;
+	justify-content: space-between;
+	margin: 35px auto 0;
+	gap: 15px;
+}
+
+.service_boxes section {
+	border: 2px solid #666666;
+	width: 560px;
+	padding: 15px;
+	box-sizing: border-box;
+	background-color: #1f1f1f;
+	border-radius: 50px;
+}
+
+.service_boxes section figure {
+	width: 100%;
+}
+
+.service_boxes section figure img {
+	width: 100%;
+	border-radius: 50px;
+}
+
+.service_boxes section h3 {
+	margin: 10px 0 20px;
+	color: #ffffff;
+}
+
+.service_boxes section p {
+	color: #ffffff;
+}
+
+.service_boxes section a {
+    display: block;
+    width: 110px;
+    background: #d84f4f;
+    line-height: 50px;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 10px;
+    margin: 25px auto 0;
+    transition: background-color 0.3s ease;
+}
+
+.service_boxes section a:hover{
+	background: #666666;
+}
+#main_footer{
+    background: #1f1f1f;
+    padding: 15px 15px;
+    color: #ffffff;
+}
+
+.social_media{
+    position: fixed;
+    top: 57px;
+    right: 0;
+    width: 50px;
+    background: #666666;
+    padding: 10px;
+    border-radius: 30px 0 0 30px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 4px;
+}
+
+.social_media a{
+    transition: transform 0.3s ease;
+}
+
+.social_media a:hover{
+	transform: scale(1.5);
+    opacity: .6; 
+}
+
+.social_media a figure{
+    
+}
+
+.social_media a figure img{
+    width: 100%;
+}
+
+#contact {
+	max-width: 1920px;
+	width: 100%;
+	background-color: #222222;
+	padding: 50px 0;
+	text-align: center;
+	color: #ffffff;
+}
+
+#contact h3 {
+	font-size: 32px;
+	margin-bottom: 20px;
+}
+
+#contact p {
+	font-size: 18px;
+	margin-bottom: 20px;
+}
+
+#contact form {
+	max-width: 600px;
+	margin: 0 auto;
+}
+
+#contact label {
+	display: block;
+	color: #ffffff;
+	font-size: 18px;
+	margin-bottom: 10px;
+}
+
+#contact input,
+#contact textarea {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 20px;
+	font-size: 16px;
+	border-radius: 5px;
+	border: none;
+	background-color: #333333;
+	color: #ffffff;
+}
+
+#contact button {
+	padding: 10px 20px;
+	background-color: #d84f4f;
+	color: #ffffff;
+	font-size: 18px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+#contact button:hover {
+	background-color: #666666;
+}
+
+#message {
+    resize: none;
+}
+
+@media screen and (max-width: 1000px){
+    .service_boxes{
+        flex-wrap: wrap;
+        justify-content: center;   
+    }
+}
+
+@media screen and (max-width: 800px){
+    .banner_info{
+        position: static;
+        transform: none;
+        background: black;
+        margin: -40px 0 0;
+        padding: 40px 15px 40px;
+    }
+}
+
+@media screen and (max-width: 600px){
+    #navigation ul{
+        position: static;
+        background: black;
+        padding: 24px 15px;
+        text-align: center;
+    }
+
+    header{
+        text-align: center;
+
+    }   
+    .social_media{
+        bottom: 0;
+        top: auto;
+        right: 0;
+        width: fit-content;
+        column-gap: 10px;
+        border-radius: 25px 0 0 0;
+        flex-direction: row;
+    }
+    .social_media a figure{
+        width: 40px;
+    }
+}
+
+@media print {
+    body{
+        display: none;
+    }
+}
+
+.service_boxes button {
+    display: block;
+    width: 110px;
+    background: #d84f4f;
+    line-height: 50px;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 10px;
+    margin: 25px auto 0;
+    transition: background-color 0.3s ease;
+}
+
+.service_boxes button:hover {
+    background-color: #666666;
+}
+
+/* Carousel Styles */
+.carousel {
+    position: relative;
+    max-width: 100%;
+    margin: 30px auto;
+    overflow: hidden;
+    border-radius: 10px;
+    border: 2px solid #666666;
+    display: flex;
+    justify-content: center; /* Center the carousel */
+    width: 526px; /* Set the specific width */
+    height: 411px; /* Set the specific height */
+}
+
+.carousel-inner {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    width: 100%; /* Ensure it takes full width */
+    height: 100%; /* Ensure it takes full height */
+}
+
+.carousel-item {
+    min-width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel-item img {
+    width: 300px;
+    height: 400px;
+    object-fit: cover;
+}
+
+button.prev, button.next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+button.prev {
+    left: 10px;
+}
+
+button.next {
+    right: 10px;
+}
+
+button.prev:hover, button.next:hover {
+    background-color: #d84f4f;
+}
+
+@media (max-width: 600px) {
+    .carousel {
+        width: 100%;
+        height: auto;
+    }
+
+    .carousel-item img {
+        width: 100%;
+        height: auto;
+    }
+}
+
+/* Custom Animations */
+.carousel-inner {
+    transition: transform 1s ease-in-out; /* Adjust timing for custom animation */
+}

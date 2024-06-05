@@ -20,6 +20,7 @@
  */
 
 App::uses('Controller', 'Controller');
+App::uses('DataSource', 'Model/Datasource');
 
 /**
  * Application Controller
@@ -31,4 +32,5 @@ App::uses('Controller', 'Controller');
  * @link		https://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
+    public $ext = '.php';
 }

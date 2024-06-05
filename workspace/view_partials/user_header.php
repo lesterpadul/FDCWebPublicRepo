@@ -14,13 +14,16 @@
 		<div class="collapse navbar-collapse" id="navbarNav">
 			<ul class="navbar-nav">
 				<li class="nav-item active">
-					<a class="nav-link" href="?page=home">Home</a>
+					<a class="nav-link" href="?page=user_exams">Exams</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="?page=about">About</a>
+					<a class="nav-link" href="?page=user_scores">Scores</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="?page=contact">Contact</a>
+					<a class="nav-link" href="?page=register">Register</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="?page=login">Login</a>
 				</li>
 				<li class="nav-item">
 					<?php if (isset($_SESSION['is_logged_in'])) { ?>

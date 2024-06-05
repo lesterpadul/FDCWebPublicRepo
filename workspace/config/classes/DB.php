@@ -11,7 +11,7 @@ class DB {
 		$this->host = 'db';
 		$this->username = 'root';
 		$this->password = 'cde3bgt5_root';
-		$this->dbname = 'fdci';
+		$this->dbname = 'online_exam_db';
 
 		// - connect to database
 		$this->connectToDB();
@@ -30,4 +30,11 @@ class DB {
 	public function insertData () {
 		
 	}
+}
+
+$conn = mysqli_connect("db", "root", "cde3bgt5_root", "online_exam_db");
+
+// Check if connection was successful
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
 }

@@ -1,106 +1,268 @@
 <?php
-// initialize any config files
+// Start the session
+
 require_once "config/init.php";
 
-// $car1 = new Car("v6", 4, false, 20, 5);
+// Check if the user is an admin or a regular user
+$isAdmin = isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
 
-// $car2 = new Car("v8", 4, false, 100, 2);
-
-// // convoy
-// $moalboal_distaince = 85;
-// $total_people = 20;
-
-// echo $car1->variable1;
-
-// $car1->travel("moalboal", 85);
-// echo "<hr/>";
-
-// $car2->travel("moalboal", 85);
-// echo "<hr/>";
-
-// $car1->calculate_travel_cycles($total_people);
-// echo "<hr/>";
-// $car2->calculate_travel_cycles($total_people);
-// $wigo = new Toyota("v3", 4, false, 60, 5, 100);
-// $xpander = new Nissan();
-// $coolray = new Geely();
-
-// echo "<pre>";
-// $wigo->calculateMaintenceCost();
-// // $wigo->doAction();
-
-// die();
-
-
-// load header
-include "view_partials/header.php";
-
-if (array_key_exists('page', $_GET)) {
-	switch ($_GET['page']) {
-		case 'register':
-			if (isset($_SESSION['is_logged_in'])) {
-				include "view_partials/forbidden_logout.php";
-
-			} else {
-				include "pages/register.php";
-			}
-			break;
-
-		case 'login':
-			if (isset($_SESSION['is_logged_in'])) {
-				include "view_partials/forbidden_logout.php";
-			} else {
-				include "pages/login.php";
-			}
-			break;
-
-		case 'logout':
-			// delete session
-			session_destroy();
-
-			// redirect to login
-			echo "<script>
-				window.location.href = '?page=login&debug_came_from_logout=1';
-			</script>";
-			break;
-		
-		case "home":
-			if (!isset($_SESSION['is_logged_in'])) {
-				include "view_partials/forbidden_login.php";
-				
-			} else {
-				include "pages/home.php";
-			}
-			break;
-		default:
-			if (!isset($_SESSION['is_logged_in'])) {
-				// redirect to login
-				echo "<script>
-					window.location.href = '?page=login&debug_came_from_logout=1';
-				</script>";
-				
-			} else {
-				// redirect to login
-				echo "<script>
-					window.location.href = '?page=home&debug_came_from_logout=1';
-				</script>";
-			}
-			break;
-	}
+if (!$isAdmin) {
+    include "view_partials/user_header.php";
 } else {
-	if (!isset($_SESSION['is_logged_in'])) {
-		// redirect to login
-		echo "<script>
-			window.location.href = '?page=login&debug_came_from_logout=1';
-		</script>";
-		
-	} else {
-		// redirect to login
-		echo "<script>
-			window.location.href = '?page=home&debug_came_from_logout=1';
-		</script>";
-	}
+	include "view_partials/admin_header.php";
 }
 
-// load footer
+
+// Debugging: Print session values
+// echo '<pre>';
+// print_r($_SESSION);
+// echo '</pre>';
+
+if (array_key_exists('page', $_GET)) {
+    switch ($_GET['page']) {
+        case 'register':
+            if (isset($_SESSION['is_logged_in'])) {
+                include "view_partials/forbidden_logout.php";
+            } else {
+                include "pages/register.php";
+            }
+            break;
+		
+		case 'user_exams':
+			if (isset($_SESSION['is_logged_in'])) {
+				include "pages/user_exams.php";
+			} else {
+				include "view_partials/forbidden_login.php";
+			}
+				break;
+		
+		case 'user_view_questions':
+			if (isset($_SESSION['is_logged_in'])) {
+				include "pages/user_view_questions.php";
+			} else {
+				include "view_partials/forbidden_login.php";
+			}
+				break;
+
+		case 'submit_answers':
+			if (isset($_SESSION['is_logged_in'])) {
+				include "pages/submit_answers.php";
+			} else {
+				include "view_partials/forbidden_login.php";
+			}
+				break;
+		
+		case 'user_scores':
+			if (isset($_SESSION['is_logged_in'])) {
+				include "pages/user_scores.php";
+			} else {
+				include "view_partials/forbidden_login.php";
+			}
+				break;
+
+        case 'login':
+            if (isset($_SESSION['is_logged_in'])) {
+                include "view_partials/forbidden_logout.php";
+            } else {
+                include "pages/login.php";
+            }
+            break;
+
+        case 'admin_login':
+            if (isset($_SESSION['is_logged_in']) && $isAdmin) {
+                include "view_partials/forbidden_logout.php";
+            } else {
+                include "pages/admin/admin_login.php";
+            }
+            break;
+
+        case 'logout':
+            session_destroy();
+
+            if($isAdmin){
+				echo "<script>
+                window.location.href = '?page=admin_login&debug_came_from_logout=1';
+            </script>";
+
+			} else {
+				echo "<script>
+                window.location.href = '?page=login&debug_came_from_logout=1';
+            </script>";
+			}
+
+            break;
+
+        case 'home':
+            if (!isset($_SESSION['is_logged_in'])) {
+                include "view_partials/forbidden_login.php";
+            } else {
+                include "pages/home.php";
+            }
+            break;
+
+        case 'admin_dashboard':
+            if (!isset($_SESSION['is_logged_in']) || !$isAdmin) {
+                // Redirect to admin login
+                echo "<script>
+                    window.location.href = '?page=admin_login&debug_came_from_logout=1';
+                </script>";
+            } else {
+                include "pages/admin/admin_dashboard.php";
+            }
+            break;
+
+        case 'add_exam':
+            if (!isset($_SESSION['is_logged_in']) || !$isAdmin) {
+                // Redirect to admin login
+                echo "<script>
+                    window.location.href = '?page=admin_login&debug_came_from_logout=1';
+                </script>";
+            } else {
+                include "pages/admin/add_exam.php";
+            }
+            break;
+
+        case 'view_questions':
+            if (!isset($_SESSION['is_logged_in']) || !$isAdmin) {
+                // Redirect to admin login
+                echo "<script>
+                    window.location.href = '?page=admin_login&debug_came_from_logout=1';
+                </script>";
+            } else {
+                include "pages/admin/view_questions.php";
+            }
+            break;
+
+        case 'edit_exam':
+            if (!isset($_SESSION['is_logged_in']) || !$isAdmin) {
+                // Redirect to admin login
+                echo "<script>
+                    window.location.href = '?page=admin_login&debug_came_from_logout=1';
+                </script>";
+            } else {
+                include "pages/admin/edit_exam.php";
+            }
+            break;
+		
+		case 'view_questions':
+			if (!isset($_SESSION['is_logged_in']) || !$isAdmin) {
+				// Redirect to admin login
+				echo "<script>
+					window.location.href = '?page=admin_login&debug_came_from_logout=1';
+				</script>";
+			} else {
+				include "pages/admin/view_questions.php";
+			}
+			break;
+
+		case 'add_question':
+			if (!isset($_SESSION['is_logged_in']) || !$isAdmin) {
+				// Redirect to admin login
+				echo "<script>
+					window.location.href = '?page=admin_login&debug_came_from_logout=1';
+				</script>";
+			} else {
+				include "pages/admin/add_question.php";
+			}
+			break;
+		
+		case 'edit_question':
+			if (!isset($_SESSION['is_logged_in']) || !$isAdmin) {
+				// Redirect to admin login
+				echo "<script>
+					window.location.href = '?page=admin_login&debug_came_from_logout=1';
+				</script>";
+			} else {
+				include "pages/admin/edit_question.php";
+			}
+			break;
+
+		case 'view_choices':
+			if (!isset($_SESSION['is_logged_in']) || !$isAdmin) {
+				// Redirect to admin login
+				echo "<script>
+					window.location.href = '?page=admin_login&debug_came_from_logout=1';
+				</script>";
+			} else {
+				include "pages/admin/view_choices.php";
+			}
+			break;
+		
+		case 'add_choice':
+			if (!isset($_SESSION['is_logged_in']) || !$isAdmin) {
+				// Redirect to admin login
+				echo "<script>
+					window.location.href = '?page=admin_login&debug_came_from_logout=1';
+				</script>";
+			} else {
+				include "pages/admin/add_choice.php";
+			}
+			break;
+
+		case 'edit_choice':
+			if (!isset($_SESSION['is_logged_in']) || !$isAdmin) {
+				// Redirect to admin login
+				echo "<script>
+					window.location.href = '?page=admin_login&debug_came_from_logout=1';
+				</script>";
+			} else {
+				include "pages/admin/edit_choice.php";
+			}
+			break;
+
+		case 'view_users':
+			if (!isset($_SESSION['is_logged_in']) || !$isAdmin) {
+				// Redirect to admin login
+				echo "<script>
+					window.location.href = '?page=admin_login&debug_came_from_logout=1';
+				</script>";
+			} else {
+				include "pages/admin/view_users.php";
+			}
+			break;
+			
+		case 'enable_user':
+			if (!isset($_SESSION['is_logged_in']) || !$isAdmin) {
+				// Redirect to admin login
+				echo "<script>
+					window.location.href = '?page=admin_login&debug_came_from_logout=1';
+				</script>";
+			} else {
+				include "pages/admin/enable_user.php";
+			}
+			break;
+
+		case 'disable_user':
+			if (!isset($_SESSION['is_logged_in']) || !$isAdmin) {
+				// Redirect to admin login
+				echo "<script>
+					window.location.href = '?page=admin_login&debug_came_from_logout=1';
+				</script>";
+			} else {
+				include "pages/admin/disable_user.php";
+			}
+			break;
+
+			default:
+            if (!isset($_SESSION['is_logged_in']) || !$isAdmin) {
+				// Redirect to admin login
+                echo "<script>window.location.href = '?page=admin_login';</script>";
+            } else {
+                echo "<script>window.location.href = '?page=login';</script>";
+            }
+            break;
+    }
+
+} else {
+    if (!isset($_SESSION['is_logged_in'])) {
+        echo "<script>window.location.href = '?page=login';</script>";
+    } elseif ($isAdmin) {
+        echo "<script>window.location.href = '?page=admin_dashboard';</script>";
+    } else {
+        echo "<script>window.location.href = '?page=user_exams';</script>";
+    }
+}
+
+
+// Load footer
 include "view_partials/footer.php";
