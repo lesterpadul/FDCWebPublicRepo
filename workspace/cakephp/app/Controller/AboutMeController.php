@@ -1,5 +1,5 @@
 <?php
-class AboutmeController extends AppController {
+class AboutMeController extends AppController {
 	public $uses = array();
 	public function index (){
 	}
