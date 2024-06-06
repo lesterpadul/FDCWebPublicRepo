@@ -30,7 +30,8 @@ App::uses('Controller', 'Controller');
  * @package		app.Controller
  * @link		https://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
-class AppController extends Controller {
+class AppController extends Controller
+{
     // this will tell cakek to support php files for the view for rendering
     public $ext = '.php';
 
@@ -39,7 +40,27 @@ class AppController extends Controller {
         'Post'
     );
 
-    public function beforeFilter(){
+    public $components = array(
+        'Session',
+        'Auth' => array(
+            'authenticate' => array(
+                'Form' => array(
+                    'fields' => array(
+                        'username' => 'username',
+                        'password' => 'password'
+                    )
+                )
+            ),
+            'loginRedirect' => array('controller' => 'posts', 'action' => 'view'),
+            'logoutRedirect' => array('controller' => 'pages', 'action' => 'landing'),
+            'authError' => 'You must be logged in to view this page.',
+            'loginError' => 'Invalid username or password.'
+        )
+    );
+
+    public function beforeFilter()
+    {
         parent::beforeFilter();
+        $this->Auth->allow('login');
     }
 }
