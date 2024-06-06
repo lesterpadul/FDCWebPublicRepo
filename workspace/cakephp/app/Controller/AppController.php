@@ -51,7 +51,7 @@ class AppController extends Controller
                     )
                 )
             ),
-            'loginRedirect' => array('controller' => 'posts', 'action' => 'view'),
+            'loginRedirect' => array('controller' => 'posts', 'action' => 'index'),
             'logoutRedirect' => array('controller' => 'pages', 'action' => 'landing'),
             'authError' => 'You must be logged in to view this page.',
             'loginError' => 'Invalid username or password.'

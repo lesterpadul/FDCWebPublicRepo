@@ -12,7 +12,6 @@ class UsersController extends AppController {
             $username = $this->request->data['username'];
             $password = AuthComponent::password($this->request->data['password']);
             
-            // Manually authenticate user
             $user = $this->User->find('first', array(
                 'conditions' => array(
                     'User.username' => $username,
@@ -38,7 +37,7 @@ class UsersController extends AppController {
             $userData = array(
                 'User' => array(
                     'username' => $this->request->data['username'],
-                    'password' => Security::hash($this->request->data['user_password'], 'sha256', true)
+                    'password' => $this->request->data['user_password']
                 )
             );
             if ($this->User->save($userData)) {

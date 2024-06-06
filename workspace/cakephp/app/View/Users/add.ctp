@@ -1,20 +1,7 @@
-<?php echo $this->Session->Flash->render(); ?>
-<!-- <form action="" method="post">
-    <div>
-        <label for="username">Username</label>
-        <input type="text" name="username" id="username" required>
-    </div>
-    <div>
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password" required>
-    </div>
-    <div>
-        <button type="submit">Register</button>
-    </div>
-</form> -->
+<?php echo $this->Flash->render(); ?>
 
-<div class="container">
-    <div class="row">
+<div class="container d-flex justify-content-center">
+    <div class="row justify-content-center w-100 login-container">
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header bg-dark">
@@ -24,12 +11,12 @@
                     <form action="" method="POST">
                         <div class="form-group">
                             <label for="name">Username</label>
-                            <input type="text" name="username" class="form-control">
+                            <input type="text" name="username" class="form-control" required>
 
                         </div>
                         <div class="form-group">
                             <label for="password">Password</label>
-                            <input type="password" name="user_password" class="form-control">
+                            <input type="password" name="user_password" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <input type="submit" name="submit" class="btn btn-primary">

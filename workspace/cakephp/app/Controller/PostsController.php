@@ -3,6 +3,12 @@ class PostsController extends AppController {
     // load helpers for use in the view later
     public $helpers = array('Html', 'Form', 'Paginator');
     
+    public function beforeFilter()
+    {
+        parent::beforeFilter();
+        $this->Auth->allow('');
+    }
+
 	public function index() {
         /** 
          * select * from posts;
