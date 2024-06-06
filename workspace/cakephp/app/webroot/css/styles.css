@@ -1,0 +1,57 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
+
+header {
+  background-color: #293d35;
+}
+
+footer {
+  background-color: #293d35;
+}
+
+i {
+  color: #66cc85;
+}
+
+.btn-primary,
+.bg-primary {
+  background-color: #66cc85;
+  border-color:#66cc85
+}
+
+.color-primary {
+  color: #66cc85;
+}
+
+.btn-primary:hover {
+  background-color: #40bf66;
+  border-color: #53c675;
+}
+
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.hero img {
+  max-width: 400px;
+}
+
+.card {
+  margin-bottom: 20px;
+}
+
+.login-container {
+  margin-top: 100px;
+}
+.card {
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.card-header {
+  background-color: #40bf66;
+  color: white;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
