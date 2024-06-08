@@ -2,7 +2,9 @@
 
 
 
-<h1>Blog posts</h1>
+<h1>Users</h1>
+<?php echo ($currentUser['username']) ?>
+<hr>
 <?php echo $this->Html->link(
     'Add User',
     array('controller' => 'users', 'action' => 'add')
@@ -22,7 +24,7 @@
         <th>Created</th>
     </tr>
     
-    <!-- Here is where we loop through our $posts array, printing out post info -->
+    <!-- Here is where we loop through our $users array, printing out user info -->
     <?php foreach ($users as $user): ?>
     <tr>
         <td><?php echo $user['User']['id']; ?></td>

@@ -21,7 +21,7 @@ class UsersController extends AppController {
             // $didLogin = $this->Auth->login();
             
             if ($didLogin) {
-                return $this->redirect($this->Auth->redirectUrl());
+                return $this->redirect($this->Auth->redirectUrl(array('controller' => 'users', 'action' => 'index')));
             }
             
             $this->Flash->error(__('Invalid username or password, try again'));
@@ -69,6 +69,7 @@ class UsersController extends AppController {
             if ($this->User->save($this->request->data)) {
                 $this->Flash->success(__('The user has been saved'));
                 return $this->redirect(array('action' => 'index'));
+                //same as return $this->redirect(array('controller' => 'users',  'action' => 'index'));
             }
             $this->Flash->error(
                 __('The user could not be saved. Please, try again.')

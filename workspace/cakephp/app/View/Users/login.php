@@ -1,18 +1,21 @@
 //app/View/Users/login.ctp
 
+<!-- app/View/Users/login.ctp -->
 <div class="users form">
-<?php echo $this->Flash->render('auth'); ?>
-<?php echo $this->Form->create('User'); ?>
-    <fieldset>
-        <legend>
-            <?php echo __('Please enter your username and password'); ?>
-        </legend>
-        <?php echo $this->Form->input('username');
-        echo $this->Form->input('password');
-    ?>
-    </fieldset>
-<?php echo $this->Form->end(__('Login')); ?>
+    <?php echo $this->Flash->render('auth'); ?>
+    <form method="post" action="/cakephp/users/login">
+        <fieldset>
+            <legend><?php echo __('Please enter your username and password'); ?></legend>
+            <label for="username">Username</label>
+            <input type="text" name="data[User][username]" id="username" required>
+            
+            <label for="password">Password</label>
+            <input type="password" name="data[User][password]" id="password" required>
+        </fieldset>
+        <button type="submit">Login</button>
+    </form>
 </div>
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
