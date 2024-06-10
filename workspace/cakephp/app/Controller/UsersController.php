@@ -18,7 +18,7 @@ class UsersController extends AppController {
             ));
             
             $didLogin = $this->Auth->login($user['User']);
-            // $didLogin = $this->Auth->login();
+            // $didLogin = $this->Auth->login($user);
             
             if ($didLogin) {
                 return $this->redirect($this->Auth->redirectUrl(array('controller' => 'users', 'action' => 'index')));
@@ -32,8 +32,8 @@ class UsersController extends AppController {
 
         $user = $this->User->find('first', array(
             'conditions' => array(
-                'username' => $this->request->data['username'],
-                'password' => $this->request->data['password']
+                'username' => $this->request->data['User']['username'],
+                'password' => $this->request->data['User']['password']
             )
         ));
 
