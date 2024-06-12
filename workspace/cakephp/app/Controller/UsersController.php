@@ -28,33 +28,18 @@ class UsersController extends AppController {
         }
     }
 
-public function ajaxLogin() {
-    $this->autoRender = false; // Disable view rendering
+public function ajaxLogin () {
     $request_data = $this->request->data;
-
-    // Check if email and password are set
-    if (!isset($request_data['email']) || !isset($request_data['password'])) {
-        echo json_encode(array(
-            "status" => "error",
-            "message" => "Email or password is missing",
-        ));
-        die();
-    }
-
-    // Retrieve the email and password from the request
     $email = $request_data['email'];
     $password = $request_data['password'];
 
-    // Find the user by email
     $user = $this->User->find('first', array(
         'conditions' => array(
-            'User.email' => $email,
+            'email' => $email,
         )
     ));
 
-    // Verify the user and password
     if ($user && password_verify($password, $user['User']['password'])) {
-        // Update last login time
         $this->User->id = $user['User']['id'];
         $this->User->saveField('last_login_time', date('Y-m-d H:i:s'));
 
@@ -67,8 +52,17 @@ public function ajaxLogin() {
             ));
             die();
         }
-    } 
+    } else {
+        echo json_encode(array(
+            "status" => "error",
+            "message" => "Invalid email or password",
+        ));
+        die();
+    }
 }
+
+
+
 
 
 
