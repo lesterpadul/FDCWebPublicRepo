@@ -8,67 +8,68 @@ class UsersController extends AppController {
         $this->Auth->allow("ajaxLogin", "add");
     }
 
-    public function login() {
-        if ($this->request->is('post')) {
-            $user = $this->User->find('first', array(
-                'conditions' => array(
-                    'email' => $this->request->data['email']
-                )
-            ));
-
-            if ($user && password_verify($this->request->data['password'], $user['User']['password'])) {
-                $didLogin = $this->Auth->login($user['User']);
-
-                if ($didLogin) {
-                    return $this->redirect($this->Auth->redirectUrl(array('controller' => 'users', 'action' => 'index')));
-                }
-            }
-
-            $this->Flash->error(__('Invalid email or password, try again'));
-        }
-    }
-
-public function ajaxLogin () {
-    $request_data = $this->request->data;
-    $email = $request_data['email'];
-    $password = $request_data['password'];
-
-    $user = $this->User->find('first', array(
-        'conditions' => array(
-            'email' => $email,
-        )
-    ));
-
-    if ($user && password_verify($password, $user['User']['password'])) {
-        $this->User->id = $user['User']['id'];
-        $this->User->saveField('last_login_time', date('Y-m-d H:i:s'));
-
-        $didLogin = $this->Auth->login($user['User']);
-
-        if ($didLogin) {
-            echo json_encode(array(
-                "status" => "success",
-                "user" => $this->Auth->user()
-            ));
-            die();
-        }
-    } else {
-        echo json_encode(array(
-            "status" => "error",
-            "message" => "Invalid email or password",
+public function login() {
+    if ($this->request->is('post')) {
+        $user = $this->User->find('first', array(
+            'conditions' => array(
+                'email' => $this->request->data['email']
+            )
         ));
-        die();
+
+        if ($user && password_verify($this->request->data['password'], $user['User']['password'])) {
+            $this->User->id = $user['User']['id'];
+            $this->User->saveField('last_login_time', date('Y-m-d H:i:s'));
+
+            $didLogin = $this->Auth->login($user['User']);
+
+            if ($didLogin) {
+                return $this->redirect($this->Auth->redirectUrl());
+            }
+        }
+
+        $this->Flash->error(__('Invalid email or password, try again'));
     }
 }
 
+    
+
+// public function ajaxLogin () {
+//     $request_data = $this->request->data;
+//     $email = $request_data['email'];
+//     $password = $request_data['password'];
+
+//     $user = $this->User->find('first', array(
+//         'conditions' => array(
+//             'email' => $email,
+//         )
+//     ));
+
+//     if ($user && password_verify($password, $user['User']['password'])) {
+//         $this->User->id = $user['User']['id'];
+//         $this->User->saveField('last_login_time', date('Y-m-d H:i:s'));
+
+//         $didLogin = $this->Auth->login($user['User']);
+
+//         if ($didLogin) {
+//             echo json_encode(array(
+//                 "status" => "success",
+//                 "user" => $this->Auth->user()
+//             ));
+//             die();
+//         }
+//     } else {
+//         echo json_encode(array(
+//             "status" => "error",
+//             "message" => "Invalid email or password",
+//         ));
+//         die();
+//     }
+// }
 
 
 
 
 
-    public function logout() {
-        return $this->redirect($this->Auth->logout());
-    }
     
     public function index() {
         $this->User->recursive = 0;
@@ -92,15 +93,45 @@ public function ajaxLogin () {
                 return;
             }
 
+            // Check if email already exists in the database
+            $existingUser = $this->User->find('first', array(
+                'conditions' => array(
+                    'email' => $userData['email']
+                )
+            ));
+            
+            if ($existingUser) {
+                $this->Flash->error(__('Email already exists. Choose a different email.'));
+                return;
+            }
+            
             $this->User->create();
             if ($this->User->save($userData)) {
                 $this->Flash->success(__('The user has been saved'));
-                return $this->redirect(array('action' => 'index'));
+
+                // Retrieve the newly created user
+                // $user = $this->User->findById($this->User->id);
+                $user = $this->User->find('first', array(
+                    'conditions' => array(
+                        'email' => $this->request->data['email']
+                    )
+                ));
+
+                // Update last login time
+                $this->User->id = $user['User']['id'];
+                $this->User->saveField('last_login_time', date('Y-m-d H:i:s'));
+
+                $didLogin = $this->Auth->login($user['User']);
+                if($didLogin) {
+                    return $this->redirect($this->Auth->redirectUrl(array('controller' => 'users', 'action' => 'index')));
+                }
+                
             }
 
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
     }
+
 
 
     public function edit($id = null) {

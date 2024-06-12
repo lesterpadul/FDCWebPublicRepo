@@ -43,6 +43,10 @@ class AppController extends Controller {
     public $components = array(
         'Flash',
         'Auth' => array(
+            'loginAction' => array(
+                'controller' => 'home',
+                'action' => 'login'
+            ),
             // if the user is logged in
             'loginRedirect' => array(
                 'controller' => 'users',
@@ -51,9 +55,8 @@ class AppController extends Controller {
 
             // if teh user is not logged in AND accesses a forbidden action,
             'logoutRedirect' => array(
-                'controller' => 'pages',
-                'action' => 'display',
-                'home'
+                'controller' => 'home',
+                'action' => 'login'
             ),
             'authenticate' => array(
                 'Form' => array(
