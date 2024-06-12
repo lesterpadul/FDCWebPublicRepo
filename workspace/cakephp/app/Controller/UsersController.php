@@ -5,46 +5,72 @@ class UsersController extends AppController {
         parent::beforeFilter();
 
         // always restrict your whitelists to a per-controller basis
-        $this->Auth->allow("ajaxLogin");
+        $this->Auth->allow("ajaxLogin", "add");
     }
 
     public function login() {
         if ($this->request->is('post')) {
             $user = $this->User->find('first', array(
                 'conditions' => array(
-                    'username' => $this->request->data['User']['username'],
-                    'password' => $this->request->data['User']['password']
+                    'email' => $this->request->data['email']
                 )
             ));
-            
-            $didLogin = $this->Auth->login($user['User']);
-            // $didLogin = $this->Auth->login($user);
-            
-            if ($didLogin) {
-                return $this->redirect($this->Auth->redirectUrl(array('controller' => 'users', 'action' => 'index')));
+
+            if ($user && password_verify($this->request->data['password'], $user['User']['password'])) {
+                $didLogin = $this->Auth->login($user['User']);
+
+                if ($didLogin) {
+                    return $this->redirect($this->Auth->redirectUrl(array('controller' => 'users', 'action' => 'index')));
+                }
             }
-            
-            $this->Flash->error(__('Invalid username or password, try again'));
+
+            $this->Flash->error(__('Invalid email or password, try again'));
         }
     }
 
-    public function ajaxLogin () {
+public function ajaxLogin() {
+    $this->autoRender = false; // Disable view rendering
+    $request_data = $this->request->data;
 
-        $user = $this->User->find('first', array(
-            'conditions' => array(
-                'username' => $this->request->data['User']['username'],
-                'password' => $this->request->data['User']['password']
-            )
-        ));
-
-        $didLogin = $this->Auth->login($user['User']);
-        
+    // Check if email and password are set
+    if (!isset($request_data['email']) || !isset($request_data['password'])) {
         echo json_encode(array(
-            "status" => "success",
-            "user" => $this->Auth->user()
+            "status" => "error",
+            "message" => "Email or password is missing",
         ));
         die();
     }
+
+    // Retrieve the email and password from the request
+    $email = $request_data['email'];
+    $password = $request_data['password'];
+
+    // Find the user by email
+    $user = $this->User->find('first', array(
+        'conditions' => array(
+            'User.email' => $email,
+        )
+    ));
+
+    // Verify the user and password
+    if ($user && password_verify($password, $user['User']['password'])) {
+        // Update last login time
+        $this->User->id = $user['User']['id'];
+        $this->User->saveField('last_login_time', date('Y-m-d H:i:s'));
+
+        $didLogin = $this->Auth->login($user['User']);
+
+        if ($didLogin) {
+            echo json_encode(array(
+                "status" => "success",
+                "user" => $this->Auth->user()
+            ));
+            die();
+        }
+    } 
+}
+
+
 
     public function logout() {
         return $this->redirect($this->Auth->logout());
@@ -65,17 +91,23 @@ class UsersController extends AppController {
 
     public function add() {
         if ($this->request->is('post')) {
+            $userData = $this->request->data;
+
+            if ($userData['password'] !== $userData['confirm_password']) {
+                $this->Flash->error(__('Passwords do not match.'));
+                return;
+            }
+
             $this->User->create();
-            if ($this->User->save($this->request->data)) {
+            if ($this->User->save($userData)) {
                 $this->Flash->success(__('The user has been saved'));
                 return $this->redirect(array('action' => 'index'));
-                //same as return $this->redirect(array('controller' => 'users',  'action' => 'index'));
             }
-            $this->Flash->error(
-                __('The user could not be saved. Please, try again.')
-            );
+
+            $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
     }
+
 
     public function edit($id = null) {
         $this->User->id = $id;

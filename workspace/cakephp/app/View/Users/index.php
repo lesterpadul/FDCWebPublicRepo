@@ -3,7 +3,7 @@
 
 
 <h1>Users</h1>
-<?php echo ($currentUser['username']) ?>
+<?php echo ($currentUser['name']) ?>
 <hr>
 <?php echo $this->Html->link(
     'Add User',
@@ -19,7 +19,7 @@
 <table>
     <tr>
         <th>Id</th>
-        <th>Title</th>
+        <th>email</th>
         <th>Edit</th>
         <th>Created</th>
     </tr>
@@ -29,7 +29,7 @@
     <tr>
         <td><?php echo $user['User']['id']; ?></td>
         <td>
-            <?php echo $user['User']['username']
+            <?php echo $user['User']['email']
             ?>
         </td>
         <td>
@@ -47,7 +47,7 @@
                 );
             ?>
         </td>
-        <td><?php echo $user['User']['created']; ?></td>
+        <td><?php echo $user['User']['created_at']; ?></td>
     </tr>
     <?php endforeach; ?>
 
