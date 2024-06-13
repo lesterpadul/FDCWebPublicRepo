@@ -3,7 +3,7 @@
 
 
 <h1>Users</h1>
-<?php echo ($currentUser['name']) ?>
+<?php echo ($currentUser['email']) ?>
 <hr>
 <?php echo $this->Html->link(
     'Add User',

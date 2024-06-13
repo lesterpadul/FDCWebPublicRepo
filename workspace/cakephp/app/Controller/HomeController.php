@@ -64,7 +64,7 @@ class HomeController extends AppController {
             
             $this->User->create();
             if ($this->User->save($userData)) {
-                $this->Flash->success(__('The user has been saved'));
+                $this->Flash->success(__('Account created.'));
 
                 // Retrieve the newly created user
                 // $user = $this->User->findById($this->User->id);
@@ -80,12 +80,12 @@ class HomeController extends AppController {
 
                 $didLogin = $this->Auth->login($user['User']);
                 if($didLogin) {
-                    return $this->redirect($this->Auth->redirectUrl(array('controller' => 'users', 'action' => 'index')));
+                    return $this->redirect($this->Auth->redirectUrl(array('controller' => 'profile', 'action' => 'index')));
                 }
                 
             }
 
-            $this->Flash->error(__('The user could not be saved. Please, try again.'));
+            $this->Flash->error(__('Failed to create account. Please, try again.'));
         }
     }
 

@@ -74,5 +74,6 @@ class AppController extends Controller {
         // global restriction
         // $this->Auth->allow('index', 'view', 'add');
         $this->set('currentUser', $this->Auth->user());
+        date_default_timezone_set('Asia/Manila');
     }
 }
