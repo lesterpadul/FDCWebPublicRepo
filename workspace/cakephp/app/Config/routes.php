@@ -24,11 +24,17 @@
  * Here, we are connecting '/' (base path) to controller called 'Pages',
  * its action called 'display', and we pass a param to select the view file
  * to use (in this case, /app/View/Pages/home.ctp)...
+ * 
  */
-	Router::connect('/home', array('controller' => 'Index', 'action' => 'index','home'));
-	Router::connect('/about-me', array('controller' => 'AboutMe', 'action' => 'aboutMe'));
-	Router::connect('/more-arts', array('controller' => 'MoreArts', 'action' => 'moreArts'));
-	Router::connect('/contacts', array('controller' => 'Contacts', 'action' => 'contacts'));
+
+	Router::connect('/home', array('controller' => 'Users', 'action' => 'index','home'));
+	Router::connect('/login', array('controller' => 'Users', 'action' => 'login'));
+	Router::connect('/register', array('controller' => 'Users', 'action' => 'register'));
+	Router::connect('/getUsers',array('controller' => 'Users', 'action' => 'getUsers'));
+	Router::connect('combinedMessages/reply', ['controller' => 'Messages', 'action' => 'reply']);
+	Router::connect('combinedMessages/delete', ['controller' => 'Messages', 'action' => 'delete']);
+
+
 
 /**
  * ...and connect the rest of 'Pages' controller's URLs.
