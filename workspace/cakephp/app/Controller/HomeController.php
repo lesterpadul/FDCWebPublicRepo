@@ -5,7 +5,7 @@ class HomeController extends AppController {
 	public function beforeFilter (){
 		parent::beforeFilter();
 		// echo "hello from home beforeFilter";
-		$this->Auth->allow("login", "register");
+		$this->Auth->allow();
 	}
 
 	public function index (){
@@ -37,6 +37,7 @@ class HomeController extends AppController {
 	}
 
     public function logout() {
+        unset($currentUser);
         return $this->redirect($this->Auth->logout());
     }
 

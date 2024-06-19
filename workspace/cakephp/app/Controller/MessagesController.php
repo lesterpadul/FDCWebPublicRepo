@@ -1,6 +1,10 @@
 <?php
 class MessagesController extends AppController {
-	public $uses = array();
+	// public $uses = [''];
 	public function index (){
+	}
+
+	public function create() {
+
 	}
 }

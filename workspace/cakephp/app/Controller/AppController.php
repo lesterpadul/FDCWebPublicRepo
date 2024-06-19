@@ -36,7 +36,8 @@ class AppController extends Controller {
 
     // include the Post Model
     public $uses = array(
-        'Post'
+        'Post',
+        'User'
     );
 
     // - include components
@@ -67,13 +68,35 @@ class AppController extends Controller {
             )
         )
     );
+
     
-    public function beforeFilter(){
-        parent::beforeFilter();
+    // public function beforeFilter(){
+    //     parent::beforeFilter();
         
-        // global restriction
-        // $this->Auth->allow('index', 'view', 'add');
-        $this->set('currentUser', $this->Auth->user());
+    //     // global restriction
+    //     // $this->Auth->allow('index', 'view', 'add');
+    //     $this->set('currentUser', $this->Auth->user());
+    //     date_default_timezone_set('Asia/Manila');
+    // }
+
+    
+    public function getUserData() {
+        $userId = $this->Auth->user('id');
+        $user = $this->User->findById($userId);
+        return $user;
+    }
+
+
+    public function beforeFilter() {
+        parent::beforeFilter();
+        $userData = $this->getUserData();
+
+        if (!empty($userData) && isset($userData['User'])) {
+            $this->set('currentUser', $userData['User']);
+        } else {
+            $this->set('currentUser', array());
+        }
         date_default_timezone_set('Asia/Manila');
     }
+    
 }

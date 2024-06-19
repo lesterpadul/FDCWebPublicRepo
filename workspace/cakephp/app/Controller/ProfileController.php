@@ -4,38 +4,71 @@ class ProfileController extends AppController {
 	public $uses = ['User'];
 
 	public function index (){
+        $userId = $this->Auth->user('id');
+        
+        $user = $this->User->findById($userId);
+        $this->set('user', $user['User']);
+
+        // echo "<pre>";
+        // var_dump($user['User']);
+        // die();
 	}
 
-    public function updateProfile() {
-        // Get the current logged-in user's ID
-        $userId = $this->Auth->user('id');
 
-        // Fetch the user record
-        $user = $this->User->findById($userId);
 
-        if (!$user) {
-            $this->Flash->error(__('User not found.'));
-            return $this->redirect(array('action' => 'index'));
-        }
+public function updateProfile() {
+    // Get the current logged-in user's ID
+    $userId = $this->Auth->user('id');
 
-        if ($this->request->is('post') || $this->request->is('put')) {
-            // Update user fields from form data
-            $this->User->id = $userId;
-            if ($this->User->save($this->request->data)) {
-                $this->Flash->success(__('Your profile has been updated.'));
-                
-                return $this->redirect(array('action' => 'index'));
-            } else {
-                $this->Flash->error(__('Unable to update your profile. Please, try again.'));
-            }
-        } else {
-            // If the request is not post or put, populate form data with user data
-            $this->request->data = $user;
-        }
+    // Fetch the user record
+    $user = $this->User->findById($userId);
+    // echo "<pre>";
+    // var_dump($user);
+    // die();
 
-        $this->set('currentUser', $this->request->data['User']);
-        
+    if (!$user) {
+        $this->Flash->error(__('User not found.'));
+        return $this->redirect(array('action' => 'index'));
     }
+
+    if ($this->request->is('post') || $this->request->is('put')) {
+        //file upload
+        if (!empty($_FILES['profile_image']['name'])) {
+            // Define the upload directory and file name
+            $uploadDir = WWW_ROOT . 'files/profile_images/';
+            $uploadFile = $uploadDir . basename($_FILES['profile_image']['name']);
+
+
+
+            // Move the uploaded file to the upload directory
+            if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $uploadFile)) {
+                // Save the file path in the request data
+                $this->request->data['User']['profile_image'] = 'files/profile_images/' . basename($_FILES['profile_image']['name']);
+            } else {
+                $this->Flash->error(__('File upload failed. Please, try again.'));
+                return $this->redirect(array('action' => 'updateProfile'));
+            }
+        }
+
+        // Update user fields from form data
+        $this->User->id = $userId;
+        if ($this->User->save($this->request->data)) {
+            $this->Flash->success(__('Your profile has been updated.'));
+            return $this->redirect(array('action' => 'index'));
+        } else {
+            $this->Flash->error(__('Unable to update your profile. Please, try again.'));
+        }
+    } else {
+        // If the request is not post or put, populate form data with user data
+        $this->request->data = $user;
+    }
+
+
+}
+
+
+
+
 
     public function delete($id = null) {
         // Prior to 2.5 use
@@ -62,7 +95,9 @@ class ProfileController extends AppController {
         
         // global restriction
         // $this->Auth->allow('index', 'view', 'add');
-        // $this->set('currentUser', $this->Auth->user());
+        
         
     }
+
+
 }
