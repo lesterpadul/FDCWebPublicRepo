@@ -1,4 +1,4 @@
-<div class="flex items-center flex-col justify-center min-h-screen">
+<section class="flex items-center flex-col justify-center min-h-screen">
     <div class="relative w-full max-w-sm overflow-y-scroll bg-white border border-gray-100 rounded-lg dark:bg-gray-700 dark:border-gray-600 h-96">
     <ul>
         <li class="border-b border:gray-100 dark:border-gray-600">
@@ -60,4 +60,4 @@
     </div>
 </div>
 
-</div>
+</section>

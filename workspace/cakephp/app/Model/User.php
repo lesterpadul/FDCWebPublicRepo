@@ -39,4 +39,56 @@ class User extends AppModel {
         }
         return true;
     }
+    
+    public $validate = array(
+        'email' => array(
+            'validEmail' => array(
+                'rule' => 'email',
+                'message' => 'Please enter a valid email address.',
+                'required' => true,
+                'on' => 'create'  //only on registration
+            ),
+            'uniqueEmail' => array(
+                'rule' => 'isUnique',
+                'message' => 'This email is already taken.',
+                'on' => 'create'  //only on registration
+            )
+        ),
+        'name' => array(
+            'nameLength' => array(
+                'rule' => array('between', 5, 20),
+                'message' => 'Name must be between 5 and 20 characters long.',
+                'required' => true,
+                'allowEmpty' => false
+            )
+        ),
+        'password' => array(
+            'complexPassword' => array(
+                'rule' => array(
+                    'custom',
+                    '/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$/'
+                ),
+                'message' => 'Password must be at least 6 characters long and contain at least one uppercase letter, one number, and one special character.',
+                'required' => true,  
+                'on' => 'create' 
+            )
+        ),
+        'confirm_password' => array(
+            'matchPasswords' => array(
+                'rule' => 'validatePasswords',
+                'message' => 'Passwords do not match.',
+                'required' => true,
+                'on' => 'create'
+            )
+        )
+    );
+
+
+    public function validatePasswords($data) {
+        if ($this->data['User']['password'] !== $data['confirm_password']) {
+            return false;
+        }
+        return true;
+    }
+
 }

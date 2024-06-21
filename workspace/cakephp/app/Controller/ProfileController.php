@@ -20,11 +20,8 @@ public function updateProfile() {
     // Get the current logged-in user's ID
     $userId = $this->Auth->user('id');
 
-    // Fetch the user record
     $user = $this->User->findById($userId);
-    // echo "<pre>";
-    // var_dump($user);
-    // die();
+    
 
     if (!$user) {
         $this->Flash->error(__('User not found.'));
@@ -32,39 +29,34 @@ public function updateProfile() {
     }
 
     if ($this->request->is('post') || $this->request->is('put')) {
-        //file upload
         if (!empty($_FILES['profile_image']['name'])) {
-            // Define the upload directory and file name
             $uploadDir = WWW_ROOT . 'files/profile_images/';
             $uploadFile = $uploadDir . basename($_FILES['profile_image']['name']);
 
-
-
-            // Move the uploaded file to the upload directory
             if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $uploadFile)) {
-                // Save the file path in the request data
                 $this->request->data['User']['profile_image'] = 'files/profile_images/' . basename($_FILES['profile_image']['name']);
             } else {
                 $this->Flash->error(__('File upload failed. Please, try again.'));
-                return $this->redirect(array('action' => 'updateProfile'));
+                return $this->redirect(array('action' => 'index'));
             }
         }
 
-        // Update user fields from form data
         $this->User->id = $userId;
         if ($this->User->save($this->request->data)) {
             $this->Flash->success(__('Your profile has been updated.'));
             return $this->redirect(array('action' => 'index'));
         } else {
-            $this->Flash->error(__('Unable to update your profile. Please, try again.'));
+            
+            $this->set('errors', $this->User->validationErrors);
+            $this->request->data = $user;
+            $this->render('index');
         }
     } else {
-        // If the request is not post or put, populate form data with user data
+        
         $this->request->data = $user;
     }
-
-
 }
+
 
 
 
