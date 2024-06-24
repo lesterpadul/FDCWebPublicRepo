@@ -63,6 +63,15 @@ background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0
             <div class="hidden w-full md:block md:w-auto" id="navbar-default">
             <ul class="font-medium flex items-center flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-900 md:dark:bg-gray-900 dark:border-gray-700">
 
+                
+                <li>
+                    <a href="/cakephp/home" class="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">Home</a>
+                </li>
+                <?php if (!empty($currentUser['id'])) : ?>
+                <li>
+                    <a href="/cakephp/messages" class="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">Messages</a>
+                </li>
+                <?php endif; ?>
 
                 <li>
 
@@ -86,7 +95,7 @@ background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0
                             <a href="/cakephp/profile" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Profile</a>
                         </li>
                         <li>
-                            <a href="/cakephp/messages" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Messages</a>
+                            <a href="/cakephp/account" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Account</a>
                         </li>
                         </ul>
                         <div class="py-1">

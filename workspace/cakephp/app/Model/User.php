@@ -46,12 +46,12 @@ class User extends AppModel {
                 'rule' => 'email',
                 'message' => 'Please enter a valid email address.',
                 'required' => true,
-                'on' => 'create'  //only on registration
+                
             ),
             'uniqueEmail' => array(
                 'rule' => 'isUnique',
                 'message' => 'This email is already taken.',
-                'on' => 'create'  //only on registration
+                // 'on' => 'update'  //only on registration
             )
         ),
         'name' => array(
@@ -59,7 +59,8 @@ class User extends AppModel {
                 'rule' => array('between', 5, 20),
                 'message' => 'Name must be between 5 and 20 characters long.',
                 'required' => true,
-                'allowEmpty' => false
+                'allowEmpty' => false,
+                'on' => 'update'  //only on registration
             )
         ),
         'password' => array(
@@ -70,7 +71,7 @@ class User extends AppModel {
                 ),
                 'message' => 'Password must be at least 6 characters long and contain at least one uppercase letter, one number, and one special character.',
                 'required' => true,  
-                'on' => 'create' 
+                // 'on' => 'update' 
             )
         ),
         'confirm_password' => array(
@@ -78,7 +79,7 @@ class User extends AppModel {
                 'rule' => 'validatePasswords',
                 'message' => 'Passwords do not match.',
                 'required' => true,
-                'on' => 'create'
+                // 'on' => 'update'
             )
         )
     );

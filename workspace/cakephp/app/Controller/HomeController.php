@@ -24,6 +24,7 @@ class HomeController extends AppController {
         ));
         
         if ($user && password_verify($this->request->data['password'], $user['User']['password'])) {
+            
             $this->User->id = $user['User']['id'];
             $this->User->saveField('last_login_time', date('Y-m-d H:i:s'));
 

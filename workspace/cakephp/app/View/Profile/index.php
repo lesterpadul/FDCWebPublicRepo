@@ -1,12 +1,14 @@
 <section class="flex items-center flex-col justify-center min-h-screen pt-36 pb-8">
     <?php echo $this->Flash->render(); ?>
     <h1 class="text-black dark:text-white text-5xl mb-10 font-medium">Profile</h1>
+        <input type="hidden" name="update_name" value="1">
     <form class="w-1/4 mx-auto" method="post" action="<?php echo $this->Html->url(array('action' => 'updateProfile')); ?>" enctype="multipart/form-data">
-        <?php if (!empty($user['profile_image'])): ?>
-            <img class="rounded-full w-32 h-32 mx-auto" src="<?php echo $this->Html->url('/' . $user['profile_image']); ?>" alt="Profile Image">
-        <?php else: ?>
-            <img class="rounded-full w-32 h-32 mx-auto" src="https://m.media-amazon.com/images/M/MV5BYWMxNGQyMTItYmUzOC00OTU1LTlhOGMtMGU5MjgwYWRmZjFkXkEyXkFqcGdeQXVyNDUzOTQ5MjY@._V1_.jpg" alt="Profile Image">
-        <?php endif; ?>
+        
+
+       
+<img class="rounded w-32 h-32 mx-auto" src="<?php echo !empty($user['profile_image']) ? $this->Html->url('/' . $user['profile_image']) : $this->Html->url('/' . $currentUser['profile_image']); ?>" alt="Profile Image">
+        
+    
 
         <div class="mb-5">
             <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="profile_image">Upload file</label>
@@ -19,11 +21,6 @@
             <?php if (!empty($errors['name'])): ?>
                 <div class="text-red-500"><?php echo $errors['name'][0]; ?></div>
             <?php endif; ?>
-        </div>
-
-        <div class="mb-5">
-            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
-            <input value="<?php echo isset($user['email']) ? h($user['email']) : $currentUser['email']; ?>" type="text" id="disabled-input" aria-label="disabled input" class="mb-5 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled>
         </div>
 
         <label for="birthdate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Birthdate</label>
