@@ -33,6 +33,7 @@ App::uses('Controller', 'Controller');
 class AppController extends Controller {
     // this will tell cakek to support php files for the view for rendering
     public $ext = '.php';
+    
 
     // include the Post Model
     public $uses = array(

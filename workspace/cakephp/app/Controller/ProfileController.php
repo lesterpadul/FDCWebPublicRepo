@@ -28,8 +28,6 @@ class ProfileController extends AppController {
         // die();
 	}
 
-
-
     public function updateProfile() {
         // $this->autoRender = false;
         $this->render(false);
@@ -45,7 +43,7 @@ class ProfileController extends AppController {
         }
 
         if ($this->request->is('post') || $this->request->is('put')) {
-            // Update user fields from form data
+
             $this->User->id = $userId;
 
             $this->User->set($this->request->data);
@@ -82,18 +80,14 @@ class ProfileController extends AppController {
                     
                 }
             } else {
-                // Set validation errors to the view
                 $this->set('errors', $this->User->validationErrors);
                 $this->render('index');
-                
             }
         }
 
-        
         if (!$this->request->is('post') && !$this->request->is('put')) {
             $this->request->data = $user;
         }
-
         $this->set('user', $user);
     }
 

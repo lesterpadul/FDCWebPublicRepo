@@ -117,7 +117,7 @@ public function login() {
                     )
                 ));
 
-                // Update last login time
+                
                 $this->User->id = $user['User']['id'];
                 $this->User->saveField('last_login_time', date('Y-m-d H:i:s'));
 

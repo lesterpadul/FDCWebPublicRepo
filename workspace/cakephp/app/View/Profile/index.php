@@ -4,11 +4,7 @@
         <input type="hidden" name="update_name" value="1">
     <form class="w-1/4 mx-auto" method="post" action="<?php echo $this->Html->url(array('action' => 'updateProfile')); ?>" enctype="multipart/form-data">
         
-
-       
-<img class="rounded w-32 h-32 mx-auto" src="<?php echo !empty($user['profile_image']) ? $this->Html->url('/' . $user['profile_image']) : $this->Html->url('/' . $currentUser['profile_image']); ?>" alt="Profile Image">
-        
-    
+        <img class="rounded w-32 h-32 mx-auto" src="<?php echo !empty($user['profile_image']) ? $this->Html->url('/' . $user['profile_image']) : $this->Html->url('/' . $currentUser['profile_image']); ?>" alt="Profile Image">
 
         <div class="mb-5">
             <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="profile_image">Upload file</label>

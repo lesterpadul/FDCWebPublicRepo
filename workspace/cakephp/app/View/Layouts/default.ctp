@@ -30,7 +30,11 @@
     } else {
         document.documentElement.classList.remove('dark')
     }
-</script>
+    </script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    
 
 <!-- <style>
     body {
@@ -45,7 +49,7 @@ background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0
 
 <body class="bg-gray-100 dark:bg-gray-900">
     <header>
-        <nav class="bg-white border-gray-200 dark:bg-gray-900 border border-gray-700 rounded absolute w-full">
+        <nav class="bg-white border-gray-200 dark:bg-gray-900 border border-gray-700 rounded top w-full ">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
             <a href="/cakephp/home" class="flex items-center space-x-3 rtl:space-x-reverse">
                 <svg class="w-[48px] h-[48px] text-blue-700 dark:text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -74,10 +78,9 @@ background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0
                 <?php endif; ?>
 
                 <li>
+                  
 
-                    <?php if (!empty($currentUser['id']) && (empty($currentUser['profile_image']))) : ?>
-                        <img id="avatarButton" type="button" data-dropdown-toggle="userDropdown" data-dropdown-placement="bottom-start" class="w-8 h-8 rounded-full cursor-pointer" src="https://m.media-amazon.com/images/M/MV5BYWMxNGQyMTItYmUzOC00OTU1LTlhOGMtMGU5MjgwYWRmZjFkXkEyXkFqcGdeQXVyNDUzOTQ5MjY@._V1_.jpg" alt="User dropdown">
-                    <?php elseif (!empty($currentUser['id']) && (!empty($currentUser['profile_image']))) : ?>
+                    <?php if (!empty($currentUser['id']) && (!empty($currentUser['profile_image']))) : ?>
                         <img id="avatarButton" type="button" data-dropdown-toggle="userDropdown" data-dropdown-placement="bottom-start" class="w-8 h-8 rounded-full cursor-pointer" src="<?php echo $this->Html->url('/' . $currentUser['profile_image']); ?>" alt="User dropdown">
                     <?php endif; ?>
 
