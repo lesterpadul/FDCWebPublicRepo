@@ -1,6 +1,6 @@
 <?php
 class MessagesController extends AppController {
-	// public $uses = [''];
+	public $uses = ['Message', 'User'];
 public function index() {
     $currentUserID = $this->Auth->user('id');
 
@@ -64,8 +64,6 @@ public function index() {
 			
 			
 		}
-
-		
 	}
 
 
@@ -91,6 +89,67 @@ public function index() {
 		$this->set('messageDetails', $messageDetails); 
 		$this->set('currentUserID', $currentUserID);
 		$this->set('recipientID', $recipientID);
+
+		$this->set('recipientImage', $messageDetails[0]['receiver_users']['profile_image']);
+		$this->set('recipientName', $messageDetails[0]['receiver_users']['receiver_name']);
 	}
+
+
+	public function reply($id = null) {
+		$currentUser = $this->Auth->user('id');
+		$recipientID = $id;
+		
+		// echo "<pre>";
+		// print_r($recipientID);
+		// die();
+
+		if ($this->request->is('post')) {
+
+			
+			$message = $this->request->data['reply'];
+
+			$data = array(
+				'sender_id' => $currentUser,
+				'receiver_id' => $recipientID,
+				'message' => $message,
+				'created_at' => date('Y-m-d H:i:s')
+			);
+
+			$this->Message->create();
+			$this->Message->save($data);
+
+			$this->Flash->success(__('Message sent.'));
+			return $this->redirect(array('action' => 'view', $recipientID));
+			
+			
+		}
+	}
+
+	public function delete($id = null) {
+		
+		
+		$messageID = $id;
+
+		// echo "<pre>";
+		// print_r($messageID);
+		// die();
+		
+		if (!$messageID) {
+			throw new NotFoundException(__('Invalid message'));
+		}
+		
+		$messageDetail = $this->Message->findById($messageID)['Message'];
+
+		$messageDetail['status'] = 0;
+
+		if ($this->Message->save($messageDetail)) {
+			$this->Flash->success(__('Message deleted'));
+			return $this->redirect(array('action' => 'view', $messageDetail['receiver_id']));
+		}
+		$this->Flash->error(__('Message was not deleted'));
+		return $this->redirect(array('action' => 'view', $messageDetail['receiver_id']));
+
+	}
+
 
 }

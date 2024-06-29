@@ -130,6 +130,40 @@ background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0
     
     <?php echo $this->fetch('content'); ?>
     
+
+
+
+    <footer class="fixed relative w-full bg-white rounded-lg shadow dark:bg-gray-900">
+        <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8">
+            <div class="sm:flex sm:items-center sm:justify-between">
+                <a href="/cakephp/home" class="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse">
+                    <svg class="w-[48px] h-[48px] text-blue-700 dark:text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd" d="M3 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-6.616l-2.88 2.592C8.537 20.461 7 19.776 7 18.477V17H5a2 2 0 0 1-2-2V6Zm4 2a1 1 0 0 0 0 2h5a1 1 0 1 0 0-2H7Zm8 0a1 1 0 1 0 0 2h2a1 1 0 1 0 0-2h-2Zm-8 3a1 1 0 1 0 0 2h2a1 1 0 1 0 0-2H7Zm5 0a1 1 0 1 0 0 2h5a1 1 0 1 0 0-2h-5Z" clip-rule="evenodd"/>
+                    </svg>
+
+                    <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">MsgBored</span>
+                </a>
+                <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
+                    <li>
+                        <a href="#" class="hover:underline me-4 md:me-6">About</a>
+                    </li>
+                    <li>
+                        <a href="#" class="hover:underline me-4 md:me-6">Privacy Policy</a>
+                    </li>
+                    <li>
+                        <a href="#" class="hover:underline me-4 md:me-6">Licensing</a>
+                    </li>
+                    <li>
+                        <a href="#" class="hover:underline">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+            <span class="block text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024 <a href="/cakephp/home" class="hover:underline">MsgBored</a>. Made with love by Jiki.</span>
+        </div>
+    </footer>
+
+
     
     
 
