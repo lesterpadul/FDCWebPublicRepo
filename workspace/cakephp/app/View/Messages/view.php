@@ -42,7 +42,7 @@
             <div class="flex flex-col gap-2">
                 <img class="w-8 h-8 rounded-full" src="<?php echo $this->Html->url(
                "/" . $messageDetail["sender_users"]["profile_image"]); ?>" alt="Sender's Image">
-                <button id="dropdownMenuIconButton"
+                <button id="dropdownMenuIconButton<?php echo $messageDetail["messages"]["id"]; ?>"
                     data-dropdown-toggle="msgOption<?php echo $messageDetail["messages"]["id"]; ?>"
                     data-dropdown-placement="bottom-start"
                     class="inline-flex self-center items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-900 dark:focus:ring-gray-600"
@@ -56,7 +56,7 @@
             </div>
             <div id="msgOption<?php echo $messageDetail["messages"]["id"]; ?>"
                 class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-40 dark:bg-gray-700 dark:divide-gray-600">
-                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton">
+                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton<?php echo $messageDetail["messages"]["id"]; ?>">
                     <li>
                         <p id="deleteButton" data-modal-target="deleteModal<? echo $messageDetail["messages"]["id"] ?> " data-modal-toggle="deleteModal<? echo $messageDetail["messages"]["id"] ?> " class="cursor-pointer block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Delete</p>
                     </li>
@@ -89,7 +89,7 @@
                         <button data-modal-toggle="deleteModal<? echo $messageDetail["messages"]["id"] ?> " type="button" class="py-2 px-3 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                             No, cancel
                         </button>
-                        <a href="/cakephp/messages/delete/<?= $messageDetail['messages']['id'] ?>" class="py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
+                        <a id="deleteMessage" href="/cakephp/messages/delete/<?= $messageDetail['messages']['id'] ?>" data-modal-toggle="deleteModal<? echo $messageDetail["messages"]["id"] ?> " class="py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
                             Yes, I'm sure 
                         </a>
                     </div>
@@ -104,7 +104,7 @@
 
     <div class=" w-full  max-w-lg  bg-white border border-gray-100 rounded-lg dark:bg-gray-800 dark:border-gray-600">
         <form id="replyForm" method="post" >
-<!-- action="<?php echo $this->Html->url(array('action' => 'reply', $recipientID)); ?>" -->
+
             <label for="chat" class="sr-only">Your message</label>
             <div class="flex items-center px-3 py-2 rounded-lg bg-gray-50 dark:bg-gray-700">
 
@@ -132,8 +132,9 @@
 $(document).ready(function() {
     const messageContainer = $('#messageContainer');
     messageContainer.scrollTop(messageContainer[0].scrollHeight);
+    
 
-    $('#replyForm').submit((e)=> {
+    $(document).on('submit', '#replyForm', function(e) {
         e.preventDefault();
 
         const param = <?php echo $this->request->params['pass'][0] ?>
@@ -148,21 +149,49 @@ $(document).ready(function() {
                 response = JSON.parse(response);
                 if (response.status === 'success') {
                     $('#chat').val(''); 
-                    $.get('/cakephp/messages/view/' + param, (data)=> {
+                    $.get('/cakephp/messages/view/' + param, (data) => {
                         const newMessages = $(data).find('#messageContainer').html();
+                        
                         $('#messageContainer').html(newMessages);
                         messageContainer.scrollTop(messageContainer[0].scrollHeight);
+                        
                     });
                 } else {
                     alert('Failed to send message.');
                 }
             },
-            error: function() {
+            error: ()=> {
                 alert('Error sending message.');
             }
         });
     });
 
+
+    $(document).on('click', '#deleteMessage', function(e) {
+        e.preventDefault();
+
+        const param = <?php echo $this->request->params['pass'][0] ?>
+
+        $.ajax({
+            url: $(this).attr('href'),
+            type: 'POST',
+            success: (response) => {
+                response = JSON.parse(response);
+                if (response.status === 'success') {
+                    $.get('/cakephp/messages/view/' + param, (data) => {
+                        const newMessages = $(data).find('#messageContainer').html();
+                        $('#messageContainer').html(newMessages);
+                        messageContainer.scrollTop(messageContainer[0].scrollHeight);
+                    });
+                } else {
+                    alert('Failed to delete message.');
+                }
+            },
+            error: function() {
+                alert('Error deleting message.');
+            }
+        });
+    });
     
 
     // var params = <?php echo $this->request->params['pass'][0]; ?>;
