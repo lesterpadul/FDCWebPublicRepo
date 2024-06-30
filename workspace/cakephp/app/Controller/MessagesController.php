@@ -1,34 +1,34 @@
 <?php
 class MessagesController extends AppController {
 	public $uses = ['Message', 'User'];
-public function index() {
-    $currentUserID = $this->Auth->user('id');
+	public function index() {
+		$currentUserID = $this->Auth->user('id');
 
-    
-	$currentUsersMessageList = $this->Message->query(
-		'SELECT messages.*, users.name, users.profile_image, users.id FROM messages
-		JOIN (
-			SELECT MAX(id) as max_id, 
-			CASE WHEN sender_id = ' . $currentUserID . ' THEN receiver_id ELSE sender_id END as other_user_id 
-			FROM messages
-			WHERE sender_id = ' . $currentUserID . ' OR receiver_id = ' . $currentUserID . ' and status = 1
-			GROUP BY CASE WHEN sender_id = ' . $currentUserID . ' THEN receiver_id ELSE sender_id END
-		) as mm ON messages.id = mm.max_id
-		JOIN users ON messages.sender_id = users.id OR messages.receiver_id = users.id
-		WHERE users.id != ' . $currentUserID . ' ORDER BY messages.created_at DESC'
-	);
+		
+		$currentUsersMessageList = $this->Message->query(
+			'SELECT messages.*, users.name, users.profile_image, users.id FROM messages
+			JOIN (
+				SELECT MAX(id) as max_id, 
+				CASE WHEN sender_id = ' . $currentUserID . ' THEN receiver_id ELSE sender_id END as other_user_id 
+				FROM messages
+				WHERE (sender_id = ' . $currentUserID . ' OR receiver_id = ' . $currentUserID . ') and (messages.status = 1)
+				GROUP BY CASE WHEN sender_id = ' . $currentUserID . ' THEN receiver_id ELSE sender_id END
+			) as mm ON messages.id = mm.max_id
+			JOIN users ON messages.sender_id = users.id OR messages.receiver_id = users.id
+			WHERE users.id != ' . $currentUserID . ' ORDER BY messages.created_at DESC'
+		);
 
-	
-	// echo "<pre>";
-	// print_r($currentUsersMessageList);
-	// die();
-	
+		
+		// echo "<pre>";
+		// print_r($currentUsersMessageList);
+		// die();
+		
 
 
-    $this->set('messages', $currentUsersMessageList);
-	$this->set('currentUserID', $currentUserID);
-	
-}
+		$this->set('messages', $currentUsersMessageList);
+		$this->set('currentUserID', $currentUserID);
+		
+	}
 
 
 	public function create() {
@@ -71,6 +71,8 @@ public function index() {
 		$currentUserID = $this->Auth->user('id');
 		$recipientID = $id;
 
+
+
 		$messageDetails = $this->Message->query(
 			'SELECT messages.*, sender_users.name as sender_name, sender_users.profile_image, receiver_users.name as receiver_name, receiver_users.profile_image
 			FROM messages
@@ -96,34 +98,38 @@ public function index() {
 
 
 	public function reply($id = null) {
-		$currentUser = $this->Auth->user('id');
-		$recipientID = $id;
-		
-		// echo "<pre>";
-		// print_r($recipientID);
-		// die();
+    $currentUser = $this->Auth->user('id');
+    $recipientID = $id;
 
-		if ($this->request->is('post')) {
+    if ($this->request->is('post')) {
+        $message = $this->request->data['reply'];
 
-			
-			$message = $this->request->data['reply'];
+        if (empty($message)) {
+            $this->Flash->error(__('Message cannot be empty.'));
+            return $this->redirect(array('action' => 'view', $recipientID));
+        }
 
-			$data = array(
-				'sender_id' => $currentUser,
-				'receiver_id' => $recipientID,
-				'message' => $message,
-				'created_at' => date('Y-m-d H:i:s')
-			);
+        $data = array(
+            'sender_id' => $currentUser,
+            'receiver_id' => $recipientID,
+            'message' => $message,
+            'created_at' => date('Y-m-d H:i:s')
+        );
 
-			$this->Message->create();
-			$this->Message->save($data);
+        $this->Message->create();
+        $this->Message->save($data);
 
-			$this->Flash->success(__('Message sent.'));
-			return $this->redirect(array('action' => 'view', $recipientID));
-			
-			
-		}
-	}
+        if ($this->Message->save($data)) {
+            $response = array(
+                'status' => 'success',
+                'message' => 'Message sent.',
+            );
+
+            echo json_encode($response);
+            die();
+        }
+    }
+}
 
 	public function delete($id = null) {
 		

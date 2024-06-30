@@ -1,4 +1,5 @@
 <section class="flex h-screen flex-col justify-center items-center w-full">
+    <?php echo $this->Flash->render(); ?>
     <div class="flex items-center gap-1 m-1">
         <img class="w-10 h-10 rounded-full" src="<?php echo $this->Html->url("/" . $recipientImage); ?>"
             alt="Sender's Image">
@@ -6,15 +7,15 @@
     </div>
 
     <div id="messageContainer"
-        class="relative w-full  max-w-lg overflow-y-scroll bg-white border border-gray-100 rounded-lg dark:bg-gray-800 dark:border-gray-600 h-96 p-5">
+        class="relative w-full max-w-lg overflow-y-scroll bg-white border border-gray-100 rounded-lg dark:bg-gray-800 dark:border-gray-600 h-96 p-5">
         <?php foreach ($messageDetails as $messageDetail): ?>
         <?php if ($messageDetail["messages"]["receiver_id"] == $currentUserID): ?>
-        <div class="flex items-start gap-2.5 mb-5">
+        <div id="sender" class="message flex items-start gap-2.5 mb-5">
             <img class="w-8 h-8 rounded-full"
                 src="<?php echo $this->Html->url("/" . $messageDetail["sender_users"]["profile_image"]); ?>"
                 alt="Sender's Image">
             <div
-                class="flex flex-col  leading-1.5 p-3 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700">
+                class="flex flex-col leading-1.5 p-3 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700">
                 <div class="flex items-center space-x-2 rtl:space-x-reverse">
                     <span class="text-xs font-normal text-gray-500 dark:text-gray-400">
                         <?php echo date("Y/m/d | H:i",strtotime($messageDetail["messages"]["created_at"])); ?>
@@ -23,14 +24,13 @@
 
                 <p class="text-sm font-normal py-2.5 text-gray-900 dark:text-white">
                     <?php echo $messageDetail["messages"]["message"]; ?></p>
-                <!-- <span class="text-sm font-normal text-gray-500 dark:text-gray-400">Delivered</span> -->
             </div>
         </div>
 
         <?php elseif ($messageDetail["messages"]["sender_id"] == $currentUserID): ?>
-        <div class="flex justify-end items-center gap-2.5 mb-5">
+        <div class="message flex justify-end items-center gap-2.5 mb-5">
             <div
-                class="flex flex-col  leading-1.5 p-3 border-gray-200 bg-blue-600 rounded-s-xl rounded-ee-xl dark:bg-blue-600">
+                class="flex flex-col leading-1.5 p-3 border-gray-200 bg-blue-600 rounded-s-xl rounded-ee-xl dark:bg-blue-600">
                 <div class="flex items-center space-x-2 rtl:space-x-reverse">
                     <span class="text-xs font-normal text-gray-300 dark:text-gray-300">
                         <?php echo date("Y/m/d | H:i", strtotime($messageDetail["messages"]["created_at"])); ?>
@@ -38,7 +38,6 @@
                 </div>
                 <p class="text-sm font-normal py-2.5 text-white dark:text-white"><?php echo $messageDetail[
                "messages"]["message"]; ?></p>
-                <!-- <span class="text-sm font-normal text-gray-500 dark:text-gray-400">Delivered</span> -->
             </div>
             <div class="flex flex-col gap-2">
                 <img class="w-8 h-8 rounded-full" src="<?php echo $this->Html->url(
@@ -51,7 +50,7 @@
                     <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
                         <path
-                            d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
+                            d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 0 1 3 0Z" />
                     </svg>
                 </button>
             </div>
@@ -104,8 +103,8 @@
     </div>
 
     <div class=" w-full  max-w-lg  bg-white border border-gray-100 rounded-lg dark:bg-gray-800 dark:border-gray-600">
-        <form method="post" action="<?php echo $this->Html->url(array('action' => 'reply', $recipientID)); ?>">
-
+        <form id="replyForm" method="post" >
+<!-- action="<?php echo $this->Html->url(array('action' => 'reply', $recipientID)); ?>" -->
             <label for="chat" class="sr-only">Your message</label>
             <div class="flex items-center px-3 py-2 rounded-lg bg-gray-50 dark:bg-gray-700">
 
@@ -124,14 +123,58 @@
             </div>
         </form>
     </div>
-
-
 </section>
 
+
 <script>
-    // Scroll to the bottom of the message container when the page loads
-    $(document).ready(function() {
-        const messageContainer = $('#messageContainer');
-        messageContainer.scrollTop(messageContainer[0].scrollHeight);
+    
+    
+$(document).ready(function() {
+    const messageContainer = $('#messageContainer');
+    messageContainer.scrollTop(messageContainer[0].scrollHeight);
+
+    $('#replyForm').submit((e)=> {
+        e.preventDefault();
+
+        const param = <?php echo $this->request->params['pass'][0] ?>
+
+        $.ajax({
+            url: '/cakephp/messages/reply/' + param,
+            type: 'POST',
+            data: {
+                reply: $('#chat').val()
+            },
+            success: (response) => {
+                response = JSON.parse(response);
+                if (response.status === 'success') {
+                    $('#chat').val(''); 
+                    $.get('/cakephp/messages/view/' + param, (data)=> {
+                        const newMessages = $(data).find('#messageContainer').html();
+                        $('#messageContainer').html(newMessages);
+                        messageContainer.scrollTop(messageContainer[0].scrollHeight);
+                    });
+                } else {
+                    alert('Failed to send message.');
+                }
+            },
+            error: function() {
+                alert('Error sending message.');
+            }
+        });
     });
+
+    
+
+    // var params = <?php echo $this->request->params['pass'][0]; ?>;
+    // setInterval(() => {
+    //     $.get('/cakephp/messages/view/' + params, function(data) {
+    //         const newMessages = $(data).find('#messageContainer').html();
+    //         $('#messageContainer').html(newMessages);
+    //         messageContainer.scrollTop(messageContainer[0].scrollHeight);
+    //     });
+    // }, 2000);
+});
+
+
+
 </script>

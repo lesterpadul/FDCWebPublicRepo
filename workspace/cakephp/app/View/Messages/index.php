@@ -1,7 +1,7 @@
 <section class="flex items-center flex-col justify-center min-h-screen">
    <h1 class="text-black dark:text-white text-5xl mb-10 font-medium">Messages</h1>
-   <div class="relative w-full max-w-sm overflow-y-scroll bg-white border border-gray-100 rounded-lg dark:bg-gray-700 dark:border-gray-600 h-96">
-      <ul>
+   <div id="" class="relative w-full max-w-sm overflow-y-scroll bg-white border border-gray-100 rounded-lg dark:bg-gray-700 dark:border-gray-600 h-96">
+      <ul id="messageList">
          <?php foreach ($messages as $message): ?>
          <li class="border-b border-gray-100 dark:border-gray-600 ">
             <a href="/cakephp/messages/view/<?php echo $message['users']['id'] ?>" class="flex justify-start w-full px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800">
@@ -52,3 +52,10 @@
       </div>
    </div>
 </section>
+
+<script>
+   setInterval(() => {
+      $('#messageList').load('/cakephp/messages/index #messageList');
+   }, 1000);
+</script>
+
