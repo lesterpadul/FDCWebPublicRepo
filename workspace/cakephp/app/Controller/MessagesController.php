@@ -76,9 +76,9 @@ public function index() {
 			FROM messages
 			JOIN users as sender_users ON sender_users.id = messages.sender_id
 			JOIN users as receiver_users ON receiver_users.id = messages.receiver_id
-			WHERE (messages.sender_id = ' . $currentUserID . ' AND messages.receiver_id = ' . $recipientID . ') 
-			OR (messages.sender_id = ' . $recipientID . ' AND messages.receiver_id = ' . $currentUserID . ') 
-			AND messages.status = 1
+			WHERE ((messages.sender_id = ' . $currentUserID . ' AND messages.receiver_id = ' . $recipientID . ') 
+			OR (messages.sender_id = ' . $recipientID . ' AND messages.receiver_id = ' . $currentUserID . '))
+			AND (messages.status = 1)
 			ORDER BY messages.created_at ASC'
 		);
 
